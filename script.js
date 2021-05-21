@@ -1,7 +1,7 @@
 const algoliaPlacesApiAppId = 'plU4N8HG6QWK';
 const algoliaPlacesApiKey = '1131438afb49f60a48ed468c5af189b8';
-const mapboxApiToken = 'pk.eyJ1Ijoia3Jva3JvYiIsImEiOiJja2YzcmcyNDkwNXVpMnRtZGwxb2MzNWtvIn0.69leM_6Roh26Ju7Lqb2pwQ';
-const taxiFareApiUrl = 'http://localhost:8000/predict';
+const mapboxApiToken = 'pk.eyJ1IjoianByZXpsZXIiLCJhIjoiY2tveTNnb2VvMGVldjJubXNvbDg5cWc1byJ9.dDONwmml2BUJbnr8pjYt3w';
+const taxiFareApiUrl = ' https://taxifare-5vxhixo52q-ew.a.run.app/predict';
 
 const displayMap = (start, stop) => {
   mapboxgl.accessToken = mapboxApiToken;
@@ -183,13 +183,13 @@ const predict = () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const data = {
-        "pickup_latitude": parseFloat(document.getElementById('pickup_latitude').value) || 40.747,
+        "pickup_datetime": `${document.getElementById('pickup_datetime').value}`,
         "pickup_longitude": parseFloat(document.getElementById('pickup_longitude').value) || -73.989,
-        "dropoff_latitude": parseFloat(document.getElementById('dropoff_latitude').value) || 40.802,
+        "pickup_latitude": parseFloat(document.getElementById('pickup_latitude').value) || 40.747,
         "dropoff_longitude": parseFloat(document.getElementById('dropoff_longitude').value) || -73.956,
-        "passenger_count": parseInt(document.getElementById('passenger_count').value) || 2,
-        "pickup_datetime": document.getElementById('pickup_datetime').value
-      };
+        "dropoff_latitude": parseFloat(document.getElementById('dropoff_latitude').value) || 40.802,
+        "passenger_count": parseInt(document.getElementById('passenger_count').value) || 2
+              };
       let query = []
       Object.keys(data).forEach((param) => {
         query.push(`${param}=${data[param]}`)
@@ -206,7 +206,7 @@ const predict = () => {
       .then(data => {
         document.getElementById('fare').classList.remove('d-none');
         const fareResult = document.getElementById('predicted-fare');
-        const fare = Math.round(data['prediction'] * 100) / 100
+        const fare = Math.round(data['pred'] * 100) / 100
         fareResult.innerText = `$${fare}`;
       })
       .catch((error) => {
